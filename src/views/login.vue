@@ -28,8 +28,8 @@ export default {
     return {
       // 表单的数据对象
       form: {
-        username: "",
-        password: ""
+        username: "13800138000",
+        password: "123"
       },
       rules: {
         username: [
@@ -43,8 +43,26 @@ export default {
   methods: {
     onSubmit() {
       this.$refs.form.validate(valid => {
+        // 如果条件成立则发送登录请求
         if (valid) {
-          alert("submit!");
+          this.$axios({
+            url: "/login",
+            method: "POST",
+            data: this.form
+          }).then(res => {
+            console.log(res);
+            if (res.data.statusCode == 200) {
+              // 将登录成功的信息保存到本地
+              const { data } = res.data;
+              localStorage.setItem("user_info", JSON.stringify(data));
+              this.$message({
+                message: "登录成功！",
+                type: "success"
+              });
+              // 成功登录跳转首页
+              this.$router.replace("/");
+            }
+          });
         } else {
           console.log("error submit!!");
           return false;
