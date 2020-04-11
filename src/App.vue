@@ -5,6 +5,8 @@
 </template>
 
 <style lang="less">
+//导入icontfont图标
+@import "//at.alicdn.com/t/font_1719542_6mtfmeb2aea.css";
 //公共样式
 * {
   margin: 0;

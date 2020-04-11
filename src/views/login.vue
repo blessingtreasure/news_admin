@@ -15,7 +15,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit" class="login">登录</el-button>
-          <el-button class="cancel">取消</el-button>
+          <el-button class="cancel" @click="onCancel">取消</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -50,7 +50,7 @@ export default {
             method: "POST",
             data: this.form
           }).then(res => {
-            console.log(res);
+            // console.log(res);
             if (res.data.statusCode == 200) {
               // 将登录成功的信息保存到本地
               const { data } = res.data;
@@ -68,6 +68,9 @@ export default {
           return false;
         }
       });
+    },
+    onCancel() {
+      this.form = "";
     }
   }
 };
@@ -75,6 +78,7 @@ export default {
 
 <style lang="less" scoped>
 .container {
+  min-width: 1200px;
   .box {
     position: absolute;
     left: 0;
@@ -100,8 +104,8 @@ export default {
     right: 0;
     top: 0;
     bottom: 0;
-    width: 600px;
-
+    width: 500px;
+    min-width: 500px;
     display: flex;
     justify-self: center;
     align-items: center;

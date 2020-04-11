@@ -13,6 +13,7 @@ import axios from 'axios'
 Vue.prototype.$axios = axios //全局注册，使用方法为:this.$axios
 // 全局的 axios 默认值,基地址
 axios.defaults.baseURL = 'http://127.0.0.1:3000';
+
 Vue.config.productionTip = false
 
 new Vue({
