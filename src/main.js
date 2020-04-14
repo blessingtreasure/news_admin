@@ -13,6 +13,25 @@ import axios from 'axios'
 Vue.prototype.$axios = axios //全局注册，使用方法为:this.$axios
 // 全局的 axios 默认值,基地址
 axios.defaults.baseURL = 'http://127.0.0.1:3000';
+// 添加全局的路由守卫
+router.beforeEach((to, from, next) => {
+  if (to.path !== '/login') {
+    const {
+      token,
+      user
+    } = JSON.parse(localStorage.getItem('user_info')) || {};
+    if (token && user.role.type === 'admin') {
+      next();
+    } else {
+      // 如果不满足上面的条件，就跳转到登录页
+      next("/login");
+    }
+
+  } else {
+    // 如果是登录页,直接跳转
+    next();
+  }
+})
 
 Vue.config.productionTip = false
 

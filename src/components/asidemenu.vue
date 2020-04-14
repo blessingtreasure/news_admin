@@ -5,6 +5,7 @@
       class="el-menu-vertical-demo"
       @open="handleOpen"
       @close="handleClose"
+      unique-opened
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b"
@@ -15,8 +16,12 @@
           <i class="el-icon-location"></i>
           <span>文章管理</span>
         </template>
-        <el-menu-item index="1-1">文章列表</el-menu-item>
-        <el-menu-item index="1-2">发布文章</el-menu-item>
+        <router-link to="/post-list">
+          <el-menu-item index="1-1" :class="$route.path=='/post-list'? 'is-active':'' ">文章列表</el-menu-item>
+        </router-link>
+        <router-link to="/post-public">
+          <el-menu-item index="1-2" :class="$route.path=='/post-public'? 'is-active':'' ">发布文章</el-menu-item>
+        </router-link>
       </el-submenu>
     </el-menu>
   </div>
@@ -38,5 +43,11 @@ export default {
 <style scoped lang="less">
 .el-menu-vertical-demo {
   border: 0;
+}
+/deep/.el-submenu__title {
+  padding: 0 40px;
+}
+.is-active {
+  color: #46a0fc !important;
 }
 </style>

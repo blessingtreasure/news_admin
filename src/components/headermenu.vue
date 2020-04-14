@@ -9,7 +9,12 @@
       </router-link>
     </div>
     <div class="right">
-      <img src="../assets/images/u80.png" alt class="user-header" />
+      <img
+        :src="$axios.defaults.baseURL+userinfo.head_img"
+        alt
+        class="user-header"
+        :title="userinfo.nickname"
+      />
       <!-- 下拉菜单 -->
       <el-dropdown trigger="click">
         <i class="el-dropdown-link title">
@@ -27,6 +32,18 @@
 
 <script>
 export default {
+  mounted() {
+    const { user } = JSON.parse(localStorage.getItem("user_info")) || {};
+    this.userinfo = user;
+    console.log(this.userinfo);
+  },
+  data() {
+    return {
+      userinfo: {
+        user: {}
+      }
+    };
+  },
   methods: {
     //   退出登录
     handlelogout() {

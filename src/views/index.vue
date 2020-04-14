@@ -10,7 +10,9 @@
         <asidemenu></asidemenu>
       </el-aside>
       <!-- main内容区 -->
-      <el-main>Main</el-main>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -28,9 +30,7 @@ export default {
       isCollapse: true
     };
   },
-  methods: {
-
-  }
+  methods: {}
 };
 </script>
 
@@ -46,14 +46,13 @@ export default {
   color: #333;
   text-align: center;
   line-height: 200px;
-
 }
 
 .el-main {
-  background-color: #d3dce6;
+  background-color: #ffffff;
   color: #333;
-  text-align: center;
-  line-height: 160px;
+  text-align: left;
+  // line-height: 160px;
 }
 
 div#app > .el-container {
