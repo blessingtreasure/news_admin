@@ -21,7 +21,10 @@
         <!-- limit：限制上传文件的数量 -->
         <!-- on-remove：移除文件的事件 -->
         <el-upload
-          action="https://jsonplaceholder.typicode.com/posts/"
+          :action="$axios.defaults.baseURL + '/upload'"
+          :headers="{
+                        Authorization: token
+                    }"
           :limit="1"
           :on-remove="handleRemove"
         >
@@ -127,7 +130,19 @@ export default {
   methods: {
     // 发布文章
     onSubmit() {
-      // console.log(this.form);
+      // 处理栏目中的数据
+      this.form.categories = this.form.categories.map(item => {
+        return {
+          id: item
+        };
+      });
+      // 处理封面图片
+      this.form.cover = this.fileList.map(item => {
+        return {
+          id: item.id
+        };
+      });
+      //   console.log(this.form);
       this.$axios({
         url: "/post",
         method: "POST",

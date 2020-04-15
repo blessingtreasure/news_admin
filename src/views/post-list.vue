@@ -120,9 +120,6 @@ export default {
           pageIndex: this.pageIndex,
           pageSize: this.pageSize,
           category: 999 // 这个是固定，因为头条栏目会返回所有的文章
-        },
-        headers: {
-          Authorization: this.token
         }
       })
         .then(res => {
@@ -131,7 +128,7 @@ export default {
           this.tableData = data;
           //   将列表的长度保存给total
           this.total = total;
-          console.log(data);
+          console.log(res);
         })
         .catch(err => {
           console.log(err);

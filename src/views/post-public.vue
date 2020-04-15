@@ -20,9 +20,13 @@
         <!-- limit：限制上传文件的数量 -->
         <!-- on-remove：移除文件的事件 -->
         <el-upload
-          action="https://jsonplaceholder.typicode.com/posts/"
+          :action="$axios.defaults.baseURL + '/upload'"
+          :headers="{
+                        Authorization: token
+                    }"
           :limit="1"
-          :on-remove="handleRemove"
+          :on-remove="handleVideoRemove"
+          :on-success="handleVideoSuccess"
         >
           <el-button size="small" type="primary">点击上传</el-button>
           <div slot="tip" class="el-upload__tip">只能上传mp4,avi文件，且不超过2m</div>
@@ -42,8 +46,10 @@
       <!-- 文件上传 action 可以将请求提交到服务器-->
       <el-form-item label="封面">
         <el-upload
-          action="http://127.0.0.1:3000/upload"
-          :headers="{Authorization:token}"
+          :action="$axios.defaults.baseURL + '/upload'"
+          :headers="{
+                        Authorization: token
+                    }"
           list-type="picture-card"
           :on-preview="handlePictureCardPreview"
           :on-remove="handleRemove"
@@ -68,7 +74,6 @@
 import { VueEditor } from "vue2-editor";
 export default {
   mounted() {
-    
     const { token } = JSON.parse(localStorage.getItem("user_info")) || {};
     this.token = token;
     // 获取栏目列表
@@ -100,8 +105,29 @@ export default {
     };
   },
   methods: {
+    // 视频移除的事件
+    handleVideoRemove(file, fileList) {
+      this.fileList = fileList;
+    },
+    // 视频上传成功的事件
+    handleVideoSuccess(response, file, fileList) {
+      // 视频文章的content只需要一个视频的链接
+      this.form.content = response.data.url;
+    },
     // 发布文章
     onSubmit() {
+      // 处理栏目中的数据
+      this.form.categories = this.form.categories.map(item => {
+        return {
+          id: item
+        };
+      });
+      // 处理封面图片
+      this.form.cover = this.fileList.map(item => {
+        return {
+          id: item.response.data.id
+        };
+      });
       // 验证表单数据
       if (this.form.title.trim() === "") {
         this.$message.warning("标题不能为空");
@@ -119,7 +145,6 @@ export default {
         this.$message.warning("封面不能为空");
         return;
       }
-      // console.log(this.form);
       this.$axios({
         url: "/post",
         method: "POST",
@@ -129,30 +154,28 @@ export default {
         data: this.form
       }).then(res => {
         console.log(res);
-
         this.$message({
           message: "恭喜你，文章发布成功！",
           type: "success"
         });
+        this.$router.replace("/post-list");
       });
     },
     // 移除图片
     handleRemove(file, fileList) {
-      this.form.cover = fileList.map(item => {
-        return item.response.data.id;
-      });
-      // console.log(this.form.cover);
+      // 把当前的图片列表赋值给data
+      this.fileList = fileList;
     },
+    // 图片预览
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
     // 图片上传
     uploadSuccesss(response, file, fileList) {
-      // 将成功的响应追加到cover数组中
-      const id = response.data.id;
-      this.form.cover.push(id);
-      console.log(response);
+      // 把当前的图片列表赋值给data
+      this.fileList = fileList;
+      console.log(fileList);
     }
   }
 };

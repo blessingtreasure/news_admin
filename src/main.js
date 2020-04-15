@@ -12,7 +12,9 @@ import axios from 'axios'
 // 将axios绑定到vue的原型实例上
 Vue.prototype.$axios = axios //全局注册，使用方法为:this.$axios
 // 全局的 axios 默认值,基地址
-axios.defaults.baseURL = 'http://127.0.0.1:3000';
+// axios.defaults.baseURL = "http://127.0.0.1:3000"
+// 线上地址
+axios.defaults.baseURL = "http://hmtoutiao-api.atlansic.com"
 // 添加全局的路由守卫
 router.beforeEach((to, from, next) => {
   if (to.path !== '/login') {

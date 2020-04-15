@@ -85,7 +85,7 @@ export default {
     top: 0;
     bottom: 0;
     background-color: #3b8aec;
-    width: 600px;
+    width: 700px;
     text-align: center;
 
     img {
